@@ -1,12 +1,14 @@
-﻿namespace Puzzle;
+﻿using Util;
+
+namespace Puzzle;
 
 public class Crossword
 {
-    private readonly ICell[,] grid;
+    public ICell[][] Grid { get; private init; }
 
     public Crossword(ICell[,] grid)
     {
-        this.grid = grid;
+        Grid = grid.ToJaggedArray();
     }
 
     public static Crossword GenerateHardCodedExample()
