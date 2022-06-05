@@ -5,6 +5,7 @@ import { Home } from './components/Home';
 import { Crossword } from './components/crossword/Crossword';
 
 import './custom.css'
+import './components/crossword/Crossword.css'
 
 export default class App extends Component {
   static displayName = App.name;

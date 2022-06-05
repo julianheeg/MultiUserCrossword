@@ -7,14 +7,16 @@ export default class BlackCell extends Component {
     }
 
     render() {
-        let text = "";
-        if (this.props.clueDown)
-            text += this.props.clueDown + " v ";
+        let clueAcrossContent = null;
         if (this.props.clueAcross)
-            text += this.props.clueAcross + " ->";
+            clueAcrossContent = <div>{this.props.clueAcross} -&gt;</div>;
+        let clueDownContent = null;
+        if (this.props.clueDown)
+            clueDownContent = <div>{this.props.clueDown} v</div>;
         return (            
-            <td>
-                {text}
+            <td className="blackCell">
+                {clueAcrossContent}
+                {clueDownContent}
             </td>
         );
     }

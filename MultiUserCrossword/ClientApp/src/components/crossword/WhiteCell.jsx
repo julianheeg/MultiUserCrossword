@@ -7,9 +7,17 @@ export default class WhiteCell extends Component {
     }
 
     render() {
+        let character = this.state.guessedCharacter;
+        if (character == null)
+            character = '';
+
+        let className = 'whiteCell';
+        if (this.props.activeInput)
+            className += ' activeWord';
+
         return (
-            <td>
-                {this.props.solutionCharacter}
+            <td className={className}>
+                <input defaultValue={character} onClick={this.props.onClick} />
             </td>
         );
     }
