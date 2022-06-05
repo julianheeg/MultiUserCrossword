@@ -13,7 +13,8 @@ export class Crossword extends Component {
             loading: true
         };
 
-        this.onCellClick = this.onCellClick.bind(this);
+        this.highlightHorizontalWord = this.highlightHorizontalWord.bind(this);
+        this.highlightVerticalWord = this.highlightVerticalWord.bind(this);
     }
 
     render() {
@@ -34,10 +35,10 @@ export class Crossword extends Component {
                                 {row.map((cell, columnIndex) => {
                                     let key = rowIndex + ',' + columnIndex;
                                     return cell.hasCharacter ?
-                                        <WhiteCell key={key} solutionCharacter={cell.solutionCharacter} activeInput={this.state.active.has(key)} onClick={() => this.onCellClick(rowIndex, columnIndex)} /> :
-                                        <BlackCell key={key} clueAcross={cell.clueAcross} clueDown={cell.clueDown} />
+                                        <WhiteCell key={key} solutionCharacter={cell.solutionCharacter} activeInput={this.state.active.has(key)} onClick={() => this.highlightHorizontalWord(rowIndex, columnIndex)} /> :
+                                        <BlackCell key={key} clueAcross={cell.clueAcross} clueDown={cell.clueDown} onHorizontalClueClick={() => this.highlightHorizontalWord(rowIndex, columnIndex)} onVerticalClueClick={() => this.highlightVerticalWord(rowIndex, columnIndex)} />
+                                })
                                 }
-                                )}
                             </tr>
                         )}
                     </tbody>
@@ -47,23 +48,47 @@ export class Crossword extends Component {
         );
     }
 
-    onCellClick(rowIndex, columnIndex) {
-        console.log("onCellClick: " + rowIndex + ", " + columnIndex);
+    highlightHorizontalWord(rowIndex, columnIndex) {
+        console.log("highlightHorizontalWord: " + rowIndex + ", " + columnIndex);
 
         let active = new Set();
 
         let row = this.state.grid[rowIndex];
         // current cell and cells with greater index
-        for (let i = columnIndex; i < row.length; i++) {
+        for (let i = columnIndex + 1; i < row.length; i++) {
             if (!row[i].hasCharacter)
                 break;
             active.add(rowIndex + ',' + i);
         }
         // cells with smaller index
-        for (let i = columnIndex - 1; i >= 0; i--) {
+        for (let i = columnIndex; i >= 0; i--) {
             if (!row[i].hasCharacter)
                 break;
             active.add(rowIndex + ',' + i);
+        }
+
+        console.log(active);
+
+        this.setState({ active: active });
+    }
+
+    highlightVerticalWord(rowIndex, columnIndex) {
+        console.log("highlightVerticalWord: " + rowIndex + ", " + columnIndex);
+
+        let active = new Set();
+        let grid = this.state.grid;
+
+        // current cell and cells with greater index
+        for (let i = rowIndex + 1; i < grid.length; i++) {
+            if (!grid[i][columnIndex].hasCharacter)
+                break;
+            active.add(i + ',' + columnIndex);
+        }
+        // cells with smaller index
+        for (let i = rowIndex; i >= 0; i--) {
+            if (!grid[i][columnIndex].hasCharacter)
+                break;
+            active.add(i + ',' + columnIndex);
         }
 
         console.log(active);
