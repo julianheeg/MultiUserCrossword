@@ -5,7 +5,8 @@ export default class WhiteCell extends Component {
         super(props);
         this.state = { guessedCharacter: null };
         this.characterInput = React.createRef();
-        this.validateInput = this.validateInput.bind(this);
+        this.handleInput = this.handleInput.bind(this);
+        this.handleControlButton = this.handleControlButton.bind(this);
     }
 
     render() {
@@ -20,21 +21,55 @@ export default class WhiteCell extends Component {
         return (
             <td className={className}>
                 <input ref={this.characterInput}
-                    defaultValue={character} pattern="[A-Z]" size="1" maxLength="1" autoComplete="off" onClick={this.props.onClick} onInput={this.validateInput}/>
+                    defaultValue={character} pattern="[A-Z]" size="1" maxLength="2" autoComplete="off" onClick={this.props.onClick} onInput={this.handleInput} onKeyDown={this.handleControlButton}/>
             </td>
         );
     }
 
-    validateInput() {
+    handleControlButton = (event) => {
+        console.log(event.key);
+        switch (event.key) {
+            case "Backspace":
+                if (event.key != "Backspace")
+                    return;
+                let input = this.characterInput.current;
+                let inputValue = input.value;
+                if (inputValue == '')
+                    this.props.navigateBackward();
+                return;
+            case "ArrowUp":
+            case "ArrowLeft":
+                this.props.navigateBackward();
+                return;
+            case "ArrowRight":
+            case "ArrowDown":
+                this.props.navigateForward();
+                return;
+            default:
+                return;
+        }
+    }
+
+    handleInput() {
         let input = this.characterInput.current;
         let inputValue = input.value;
-        inputValue = inputValue.toUpperCase();
-        if (/[A-Z]/.test(inputValue)) {
-            input.value = inputValue;   // set to upper case if lower case was put in
-            this.props.onValidInput();
+        // return early if no value;
+        if (inputValue == '')
+            return;
+        // get previous value
+        let previousValue = '';
+        if (inputValue.length > 1)
+            previousValue = inputValue[0];
+        // get next value and, if not valid, reset input to previos value and return 
+        inputValue = inputValue[inputValue.length - 1].toUpperCase();
+        if (!/[A-Z]/.test(inputValue)) {
+            input.value = previousValue;
+            return;
         }
-        else
-            input.value = '';
+
+        // set input field to new value
+        input.value = inputValue;  
+        this.props.navigateForward();
     }
 
     componentDidUpdate() {

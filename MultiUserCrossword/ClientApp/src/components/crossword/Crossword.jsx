@@ -17,6 +17,7 @@ export class Crossword extends Component {
         this.highlightHorizontalWord = this.highlightHorizontalWord.bind(this);
         this.highlightVerticalWord = this.highlightVerticalWord.bind(this);
         this.focusNextLetterAfterInput = this.focusNextLetterAfterInput.bind(this);
+        this.focusPreviousLetter = this.focusPreviousLetter.bind(this);
     }
 
     render() {
@@ -38,7 +39,7 @@ export class Crossword extends Component {
                                     let key = rowIndex + ',' + columnIndex;
                                     return cell.hasCharacter ?
                                         <WhiteCell key={key} solutionCharacter={cell.solutionCharacter} onClick={() => this.highlightHorizontalWord(rowIndex, columnIndex)} activeWord={this.state.activeWord.includes(key)}
-                                            activeCell={this.state.activeCell == key} onValidInput={() => this.focusNextLetterAfterInput(key)} /> :
+                                            activeCell={this.state.activeCell == key} navigateForward={() => this.focusNextLetterAfterInput(key)} navigateBackward={() => this.focusPreviousLetter(key)} /> :
                                         <BlackCell key={key} clueAcross={cell.clueAcross} clueDown={cell.clueDown} onHorizontalClueClick={() => this.highlightHorizontalWord(rowIndex, columnIndex)} onVerticalClueClick={() => this.highlightVerticalWord(rowIndex, columnIndex)} />
                                 })
                                 }
@@ -116,6 +117,14 @@ export class Crossword extends Component {
         if (currentLetterInWord == this.state.activeWord.length - 1)
             return;
         let nextActiveCell = this.state.activeWord[currentLetterInWord + 1];
+        this.setState({ activeCell: nextActiveCell });
+    }
+
+    focusPreviousLetter(key) {
+        let currentLetterInWord = this.state.activeWord.indexOf(key);
+        if (currentLetterInWord == 0)
+            return;
+        let nextActiveCell = this.state.activeWord[currentLetterInWord - 1];
         this.setState({ activeCell: nextActiveCell });
     }
 
