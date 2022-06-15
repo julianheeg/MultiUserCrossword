@@ -1,4 +1,5 @@
 ﻿import React, { Component } from 'react';
+import { Direction } from './Direction';
 
 export default class WhiteCell extends Component {
     constructor(props) {
@@ -27,23 +28,24 @@ export default class WhiteCell extends Component {
     }
 
     handleControlButton = (event) => {
-        console.log(event.key);
         switch (event.key) {
             case "Backspace":
-                if (event.key != "Backspace")
-                    return;
                 let input = this.characterInput.current;
                 let inputValue = input.value;
                 if (inputValue == '')
-                    this.props.navigateBackward();
+                    this.props.navigate(Direction.Backward);
                 return;
             case "ArrowUp":
+                this.props.navigate(Direction.Up);
+                return;
             case "ArrowLeft":
-                this.props.navigateBackward();
+                this.props.navigate(Direction.Left);
                 return;
             case "ArrowRight":
+                this.props.navigate(Direction.Right);
+                return;
             case "ArrowDown":
-                this.props.navigateForward();
+                this.props.navigate(Direction.Down);
                 return;
             default:
                 return;
@@ -69,7 +71,7 @@ export default class WhiteCell extends Component {
 
         // set input field to new value
         input.value = inputValue;  
-        this.props.navigateForward();
+        this.props.navigate(Direction.Forward);
     }
 
     componentDidUpdate() {

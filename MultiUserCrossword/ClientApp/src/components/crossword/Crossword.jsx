@@ -1,6 +1,7 @@
 ﻿import React, { Component } from 'react';
 import WhiteCell from './WhiteCell';
 import BlackCell from './BlackCell';
+import { Direction } from './Direction';
 
 export class Crossword extends Component {
     static displayName = Crossword.name;
@@ -16,8 +17,7 @@ export class Crossword extends Component {
 
         this.highlightHorizontalWord = this.highlightHorizontalWord.bind(this);
         this.highlightVerticalWord = this.highlightVerticalWord.bind(this);
-        this.focusNextLetterAfterInput = this.focusNextLetterAfterInput.bind(this);
-        this.focusPreviousLetter = this.focusPreviousLetter.bind(this);
+        this.navigate = this.navigate.bind(this);
     }
 
     render() {
@@ -39,7 +39,7 @@ export class Crossword extends Component {
                                     let key = rowIndex + ',' + columnIndex;
                                     return cell.hasCharacter ?
                                         <WhiteCell key={key} solutionCharacter={cell.solutionCharacter} onClick={() => this.highlightHorizontalWord(rowIndex, columnIndex)} activeWord={this.state.activeWord.includes(key)}
-                                            activeCell={this.state.activeCell == key} navigateForward={() => this.focusNextLetterAfterInput(key)} navigateBackward={() => this.focusPreviousLetter(key)} /> :
+                                            activeCell={this.state.activeCell == key} navigate={(direction) => this.navigate(rowIndex, columnIndex, direction)} /> :
                                         <BlackCell key={key} clueAcross={cell.clueAcross} clueDown={cell.clueDown} onHorizontalClueClick={() => this.highlightHorizontalWord(rowIndex, columnIndex)} onVerticalClueClick={() => this.highlightVerticalWord(rowIndex, columnIndex)} />
                                 })
                                 }
@@ -112,7 +112,57 @@ export class Crossword extends Component {
             return activeWord[0];
     }
 
-    focusNextLetterAfterInput(key) {
+    navigate(rowIndex, columnIndex, direction) {
+        switch (direction) {
+            case Direction.Forward:
+                this.focusNextLetter(rowIndex, columnIndex);
+                return;
+            case Direction.Backward:
+                this.focusPreviousLetter(rowIndex, columnIndex);
+                return;
+            case Direction.Up:
+                {
+                    if (rowIndex <= 0)
+                        return;
+                    let newRowIndex = rowIndex - 1;
+                    if (this.state.grid[newRowIndex][columnIndex].hasCharacter)
+                        this.highlightVerticalWord(newRowIndex, columnIndex);
+                    return;
+                }
+            case Direction.Down:
+                {
+                    if (rowIndex >= this.state.grid.length - 1)
+                        return;
+                    let newRowIndex = rowIndex + 1;
+                    if (this.state.grid[newRowIndex][columnIndex].hasCharacter)
+                        this.highlightVerticalWord(newRowIndex, columnIndex);
+                    return;
+                }
+            case Direction.Left:
+                {
+                    if (columnIndex <= 0)
+                        return;
+                    let newColumnIndex = columnIndex - 1;
+                    if (this.state.grid[rowIndex][newColumnIndex].hasCharacter)
+                        this.highlightHorizontalWord(rowIndex, newColumnIndex);
+                    return;
+                }
+            case Direction.Right:
+                {
+                    if (columnIndex >= this.state.grid[0].length - 1)
+                        return;
+                    let newColumnIndex = columnIndex + 1;
+                    if (this.state.grid[rowIndex][newColumnIndex].hasCharacter)
+                        this.highlightHorizontalWord(rowIndex, newColumnIndex);
+                    return;
+                }
+            default:
+                throw 'unreachable code';
+        }
+    }
+
+    focusNextLetter(rowIndex, columnIndex) {
+        let key = rowIndex + ',' + columnIndex;
         let currentLetterInWord = this.state.activeWord.indexOf(key);
         if (currentLetterInWord == this.state.activeWord.length - 1)
             return;
@@ -120,7 +170,8 @@ export class Crossword extends Component {
         this.setState({ activeCell: nextActiveCell });
     }
 
-    focusPreviousLetter(key) {
+    focusPreviousLetter(rowIndex, columnIndex) {
+        let key = rowIndex + ',' + columnIndex;
         let currentLetterInWord = this.state.activeWord.indexOf(key);
         if (currentLetterInWord == 0)
             return;
