@@ -1,0 +1,11 @@
+﻿.crossword {
+}
+
+td.blackCell {
+    color: white;
+    background: black;
+}
+
+td.whiteCell.activeWord {
+    background: green;
+}

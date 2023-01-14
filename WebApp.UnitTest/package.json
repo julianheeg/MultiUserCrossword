@@ -1,0 +1,16 @@
+{
+  "name": "web-app.unit-test",
+  "version": "0.0.0",
+  "description": "WebApp.UnitTest",
+  "main": "app.js",
+  "author": {
+    "name": ""
+  },
+  "scripts": {
+    "test": "jest"
+  },
+  "devDependencies": {
+    "jest": "^28.1.1",
+    "jest-editor-support": "^30.1.0"
+  }
+}
