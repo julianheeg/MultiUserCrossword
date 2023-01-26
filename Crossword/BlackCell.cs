@@ -2,7 +2,7 @@
 
 internal class BlackCell : IBlackCell
 {
-    public bool HasCharacter => false;
+    public bool IsWhiteCell => false;
 
     public string? ClueAcross { get; init; }
 

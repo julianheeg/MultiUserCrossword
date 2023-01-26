@@ -1,7 +1,7 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import { Layout } from './components/Layout';
+import Layout from './components/Layout';
 import { Home } from './components/Home';
-import { Crossword } from './components/crossword/Crossword';
+import Crossword from './components/crossword/Crossword';
 import './App.css';
 import './components/crossword/Crossword.css'
 

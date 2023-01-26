@@ -5,7 +5,7 @@ namespace Puzzle;
 [DebuggerDisplay("solution: {SolutionCharacter}, guessed: {GuessedCharacter}")]
 internal class WhiteCell : IWhiteCell
 {
-    public bool HasCharacter => true;
+    public bool IsWhiteCell => true;
     public char SolutionCharacter { get; private init; }
     public char? GuessedCharacter { get; private init; }
 

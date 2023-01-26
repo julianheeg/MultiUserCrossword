@@ -26,7 +26,23 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="ClientApp\src\components\crossword\BlackCell.test.tsx" />
+    <None Remove="ClientApp\src\components\crossword\Clue.test.tsx" />
+    <None Remove="ClientApp\src\components\crossword\Crossword.test.tsx" />
+    <None Remove="ClientApp\src\components\crossword\crosswordGrid.type.ts" />
+    <None Remove="ClientApp\src\components\crossword\WhiteCell.test.tsx" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Crossword\Puzzle.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <TypeScriptCompile Include="ClientApp\src\components\crossword\BlackCell.test.tsx" />
+    <TypeScriptCompile Include="ClientApp\src\components\crossword\Clue.test.tsx" />
+    <TypeScriptCompile Include="ClientApp\src\components\crossword\Crossword.test.tsx" />
+    <TypeScriptCompile Include="ClientApp\src\components\crossword\crosswordGrid.type.ts" />
+    <TypeScriptCompile Include="ClientApp\src\components\crossword\WhiteCell.test.tsx" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

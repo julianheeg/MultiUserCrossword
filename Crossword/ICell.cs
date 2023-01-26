@@ -2,5 +2,5 @@
 
 public interface ICell
 {
-    bool HasCharacter { get; }
+    bool IsWhiteCell { get; }
 }
