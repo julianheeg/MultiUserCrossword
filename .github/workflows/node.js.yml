@@ -29,6 +29,7 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
+        path: ./MultiUserCrossword/ClientApp
     - run: npm ci
       working-directory: ./MultiUserCrossword/ClientApp
     - run: npm run build --if-present
