@@ -11,7 +11,8 @@ on:
 
 defaults:
   run:
-    working-directory: ./MultiUserCrossword/ClientApp  
+    working-directory: './MultiUserCrossword/ClientApp'
+    
 jobs:
   build:
 
