@@ -1,4 +1,4 @@
-import { Component, FC, ReactNode } from 'react';
+import { FC, ReactNode } from 'react';
 import { Container } from '@mui/material';
 import NavMenu from './NavMenu';
 

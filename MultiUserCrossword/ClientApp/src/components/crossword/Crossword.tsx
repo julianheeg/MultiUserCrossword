@@ -3,7 +3,7 @@ import WhiteCellComponent from './WhiteCell';
 import BlackCellComponent from './BlackCell';
 import { Direction } from './Direction';
 import { Table, TableBody, TableRow } from '@mui/material';
-import { Cell, BlackCell, WhiteCell } from './crosswordGrid.type';
+import { Cell, BlackCell } from './crosswordGrid.type';
 
 const Crossword: FC<{}> = () => {
     const [grid, setGrid] = useState<Cell[][] | null>(null);
