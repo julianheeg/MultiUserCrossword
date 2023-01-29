@@ -13,6 +13,9 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: MultiUserCrossword/ClientApp
     
 
     strategy:
@@ -27,6 +30,7 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
+        working-directory: MultiUserCrossword/ClientApp
     - run: npm ci
     - run: npm run build --if-present
     - run: npm test
