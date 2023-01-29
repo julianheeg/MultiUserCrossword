@@ -12,10 +12,10 @@ on:
 jobs:
   build:
 
-    runs-on: ubuntu-latest    
+    runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./MultiUserCrossword/ClientApp
+        working-directory: MultiUserCrossword/ClientApp
 
     strategy:
       matrix:
@@ -30,8 +30,5 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
     - run: npm ci
-      working-directory: ./MultiUserCrossword/ClientApp
     - run: npm run build --if-present
-      working-directory: ./MultiUserCrossword/ClientApp
     - run: npm test
-      working-directory: ./MultiUserCrossword/ClientApp
