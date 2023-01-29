@@ -1,4 +1,4 @@
-﻿import React, { FC, Component } from 'react';
+import { FC } from 'react';
 
 interface ClueProps {
     horizontal: boolean;
