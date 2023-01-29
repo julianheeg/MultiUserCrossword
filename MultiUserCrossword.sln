@@ -3,15 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33205.214
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MultiUserCrossword", "MultiUserCrossword\MultiUserCrossword.csproj", "{576C99CD-A27B-4009-A427-CE24D64DDBF4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MultiUserCrossword", "MultiUserCrossword\MultiUserCrossword.csproj", "{576C99CD-A27B-4009-A427-CE24D64DDBF4}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Puzzle", "Crossword\Puzzle.csproj", "{536725D7-590C-4624-BBB1-5C8D0F9CB065}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Puzzle.UnitTest", "Puzzle.UnitTest\Puzzle.UnitTest.csproj", "{A02DB33D-1CCD-40E1-9FEC-7E1EB170739C}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Util", "Util\Util.csproj", "{C74E71EE-A2F4-4CE3-B832-7B7734C17866}"
-EndProject
-Project("{9092AA53-FB77-4645-B42D-1CCCA6BD08BD}") = "WebApp.UnitTest", "WebApp.UnitTest\WebApp.UnitTest.njsproj", "{39B8006A-C532-4B15-98E1-DA505DB740C7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,10 +33,6 @@ Global
 		{C74E71EE-A2F4-4CE3-B832-7B7734C17866}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C74E71EE-A2F4-4CE3-B832-7B7734C17866}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C74E71EE-A2F4-4CE3-B832-7B7734C17866}.Release|Any CPU.Build.0 = Release|Any CPU
-		{39B8006A-C532-4B15-98E1-DA505DB740C7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{39B8006A-C532-4B15-98E1-DA505DB740C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{39B8006A-C532-4B15-98E1-DA505DB740C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{39B8006A-C532-4B15-98E1-DA505DB740C7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
