@@ -1,5 +1,9 @@
-﻿namespace Puzzle;
+﻿using Puzzle.JsonConverters;
+using System.Text.Json.Serialization;
 
+namespace Puzzle;
+
+[JsonConverter(typeof(BlackCellJsonConverter))]
 internal class BlackCell : IBlackCell
 {
     public bool IsWhiteCell => false;

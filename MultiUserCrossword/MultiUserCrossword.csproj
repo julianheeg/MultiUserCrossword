@@ -30,7 +30,12 @@
     <None Remove="ClientApp\src\components\crossword\Clue.test.tsx" />
     <None Remove="ClientApp\src\components\crossword\Crossword.test.tsx" />
     <None Remove="ClientApp\src\components\crossword\crosswordGrid.type.ts" />
+    <None Remove="ClientApp\src\components\crossword\Loading.tsx" />
     <None Remove="ClientApp\src\components\crossword\WhiteCell.test.tsx" />
+    <None Remove="ClientApp\src\signalr\IHubConnection.ts" />
+    <None Remove="ClientApp\src\signalr\MockHubConnection.ts" />
+    <None Remove="ClientApp\src\signalr\WrappedHubConnection.ts" />
+    <None Remove="ClientApp\src\signalr\WrappedHubConnectionBuilder.ts" />
   </ItemGroup>
 
   <ItemGroup>
@@ -42,7 +47,12 @@
     <TypeScriptCompile Include="ClientApp\src\components\crossword\Clue.test.tsx" />
     <TypeScriptCompile Include="ClientApp\src\components\crossword\Crossword.test.tsx" />
     <TypeScriptCompile Include="ClientApp\src\components\crossword\crosswordGrid.type.ts" />
+    <TypeScriptCompile Include="ClientApp\src\components\crossword\Loading.tsx" />
     <TypeScriptCompile Include="ClientApp\src\components\crossword\WhiteCell.test.tsx" />
+    <TypeScriptCompile Include="ClientApp\src\signalr\WrappedHubConnection.ts" />
+    <TypeScriptCompile Include="ClientApp\src\signalr\IHubConnection.ts" />
+    <TypeScriptCompile Include="ClientApp\src\signalr\MockHubConnection.ts" />
+    <TypeScriptCompile Include="ClientApp\src\signalr\WrappedHubConnectionBuilder.ts" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
