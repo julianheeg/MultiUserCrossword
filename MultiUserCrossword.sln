@@ -9,8 +9,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Puzzle", "Crossword\Puzzle.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Puzzle.UnitTest", "Puzzle.UnitTest\Puzzle.UnitTest.csproj", "{A02DB33D-1CCD-40E1-9FEC-7E1EB170739C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Util", "Util\Util.csproj", "{C74E71EE-A2F4-4CE3-B832-7B7734C17866}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,10 +27,6 @@ Global
 		{A02DB33D-1CCD-40E1-9FEC-7E1EB170739C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A02DB33D-1CCD-40E1-9FEC-7E1EB170739C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A02DB33D-1CCD-40E1-9FEC-7E1EB170739C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C74E71EE-A2F4-4CE3-B832-7B7734C17866}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C74E71EE-A2F4-4CE3-B832-7B7734C17866}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C74E71EE-A2F4-4CE3-B832-7B7734C17866}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C74E71EE-A2F4-4CE3-B832-7B7734C17866}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
