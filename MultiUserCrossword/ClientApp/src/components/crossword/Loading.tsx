@@ -1,4 +1,4 @@
-﻿import { FC } from 'react';
+import { FC } from 'react';
 
 interface LoadingProps {
     connectionCallbacksReady: boolean
@@ -12,7 +12,7 @@ const Loading: FC<LoadingProps> = (props) => {
             </div>
         );
     return (
-        <div data-testid={'notReady' }>
+        <div>
             <p><em>Loading...</em></p >
         </div>
     );

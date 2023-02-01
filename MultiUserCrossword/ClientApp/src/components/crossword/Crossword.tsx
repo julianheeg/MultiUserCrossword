@@ -13,12 +13,12 @@ const Crossword: FC<{}> = () => {
     const [grid, setGrid] = useState<ICell[][] | null>(null);
     const [activeWord, setActiveWord] = useState<string[]>([]);
     const [activeCell, setActiveCell] = useState<string | null>(null);
-    const [connection, setConnection] = useState<IHubConnection | null>(null);
+    const [_, setConnection] = useState<IHubConnection | null>(null);
     const [connectionCallbacksReady, setConnectionCallbacksReady] = useState<boolean>(false);
 
     useEffect(() => {
         const hubConnection = new WrappedHubConnectionBuilder()
-            .withUrl('https://localhost:7177' + '/hubs/crossword')
+            .withUrl('https://localhost:7177/hubs/crossword')
             .withAutomaticReconnect()
             .configureLogging(LogLevel.Information)
             .build();

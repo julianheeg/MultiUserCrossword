@@ -1,4 +1,4 @@
-﻿import IHubConnection from './IHubConnection';
+import IHubConnection from './IHubConnection';
 import MockHubConnection from './MockHubConnection';
 
 class WrappedHubConnection implements IHubConnection {

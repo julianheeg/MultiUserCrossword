@@ -1,10 +1,10 @@
-﻿import IHubConnection from "./IHubConnection";
+import IHubConnection from "./IHubConnection";
 
 class MockHubConnection implements IHubConnection {
     private callbackByFunctionName: Map<string, (...args: any[]) => void>
 
     constructor() {
-        this.callbackByFunctionName = new Map<string, (...args: any[]) => void>;
+        this.callbackByFunctionName = new Map<string, (...args: any[]) => void>();
     }
 
     on(methodName: string, newMethod: (...args: any[]) => void) {

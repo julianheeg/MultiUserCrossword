@@ -1,6 +1,5 @@
-﻿import { HubConnectionBuilder, IHubProtocol, LogLevel } from "@microsoft/signalr";
+import { HubConnectionBuilder, IHubProtocol, LogLevel } from "@microsoft/signalr";
 import IHubConnection from "./IHubConnection";
-import MockHubConnection from "./MockHubConnection";
 import WrappedHubConnection from "./WrappedHubConnection";
 
 class WrappedHubConnectionBuilder {

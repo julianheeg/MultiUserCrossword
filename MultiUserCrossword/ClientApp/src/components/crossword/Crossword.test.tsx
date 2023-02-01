@@ -1,6 +1,5 @@
 ﻿import { render, screen, fireEvent, act } from '@testing-library/react';
 import Crossword from './Crossword';
-import fetchMock from 'jest-fetch-mock';
 import MockHubConnection from '../../signalr/MockHubConnection';
 import WrappedHubConnectionBuilder from '../../signalr/WrappedHubConnectionBuilder';
 import { ICrossword } from './crosswordGrid.type';
@@ -68,13 +67,11 @@ const testCrossword: ICrossword = {
 const mockHubConnection = new MockHubConnection();
 
 beforeEach(() => {
-    fetchMock.resetMocks();
     mockHubConnection.resetMock();
     jest.spyOn(WrappedHubConnectionBuilder.prototype, 'build').mockReturnValue(mockHubConnection);
 })
 
 it('renders without crashing', async () => {
-    fetchMock.mockResponseOnce(JSON.stringify(testCrossword));
     render(<Crossword />);
     await screen.findByTestId('connectionCallbacksReady');
     await act(() => {
@@ -84,7 +81,6 @@ it('renders without crashing', async () => {
 })
 
 it('loads a crossword after mounting', async () => {
-    fetchMock.mockResponseOnce(JSON.stringify(testCrossword));
     render(<Crossword />);
     await screen.findByTestId('connectionCallbacksReady');
     await act(() => {
@@ -97,7 +93,6 @@ it('loads a crossword after mounting', async () => {
 })
 
 it('has not highlighted a word after mounting', async () => {
-    fetchMock.mockResponseOnce(JSON.stringify(testCrossword));
     render(<Crossword />);
     await screen.findByTestId('connectionCallbacksReady');
     await act(() => {
@@ -109,7 +104,6 @@ it('has not highlighted a word after mounting', async () => {
 })
 
 it('highlights corresponding horizontal word when clicking on an across clue', async () => {
-    fetchMock.mockResponseOnce(JSON.stringify(testCrossword));
     render(<Crossword />);
     await screen.findByTestId('connectionCallbacksReady');
     await act(() => {
@@ -128,7 +122,6 @@ it('highlights corresponding horizontal word when clicking on an across clue', a
 })
 
 it('highlights corresponding vertical word when clicking on a down clue', async () => {
-    fetchMock.mockResponseOnce(JSON.stringify(testCrossword));
     render(<Crossword />);
     await screen.findByTestId('connectionCallbacksReady');
     await act(() => {
@@ -146,7 +139,6 @@ it('highlights corresponding vertical word when clicking on a down clue', async 
 })
 
 it('highlights corresponding horizontal word when clicking on a white cell input', async () => {
-    fetchMock.mockResponseOnce(JSON.stringify(testCrossword));
     render(<Crossword />);
     await screen.findByTestId('connectionCallbacksReady');
     await act(() => {
@@ -165,7 +157,6 @@ it('highlights corresponding horizontal word when clicking on a white cell input
 })
 
 it('focusses first white cell input in horizontal word when clicking on an across clue', async () => {
-    fetchMock.mockResponseOnce(JSON.stringify(testCrossword));
     render(<Crossword />);
     await screen.findByTestId('connectionCallbacksReady');
     await act(() => {
@@ -179,7 +170,6 @@ it('focusses first white cell input in horizontal word when clicking on an acros
 })
 
 it('focusses first white cell input in vertical word when clicking on a down clue', async () => {
-    fetchMock.mockResponseOnce(JSON.stringify(testCrossword));
     render(<Crossword />);
     await screen.findByTestId('connectionCallbacksReady');
     await act(() => {
@@ -193,7 +183,6 @@ it('focusses first white cell input in vertical word when clicking on a down clu
 })
 
 it('focusses corresponding input when clicking on a white cell', async () => {
-    fetchMock.mockResponseOnce(JSON.stringify(testCrossword));
     render(<Crossword />);
     await screen.findByTestId('connectionCallbacksReady');
     await act(() => {
@@ -205,7 +194,6 @@ it('focusses corresponding input when clicking on a white cell', async () => {
 })
 
 it('navigates left when left arrow key is pressed and navigation is possible', async () => {
-    fetchMock.mockResponseOnce(JSON.stringify(testCrossword));
     render(<Crossword />);
     await screen.findByTestId('connectionCallbacksReady');
     await act(() => {
@@ -224,7 +212,6 @@ it('navigates left when left arrow key is pressed and navigation is possible', a
 })
 
 it('keeps focus when left arrow key is pressed and navigation is not possible', async () => {
-    fetchMock.mockResponseOnce(JSON.stringify(testCrossword));
     render(<Crossword />);
     await screen.findByTestId('connectionCallbacksReady');
     await act(() => {
@@ -243,7 +230,6 @@ it('keeps focus when left arrow key is pressed and navigation is not possible', 
 })
 
 it('navigates right when right arrow key is pressed and navigation is possible', async () => {
-    fetchMock.mockResponseOnce(JSON.stringify(testCrossword));
     render(<Crossword />);
     await screen.findByTestId('connectionCallbacksReady');
     await act(() => {
@@ -262,7 +248,6 @@ it('navigates right when right arrow key is pressed and navigation is possible',
 })
 
 it('keeps focus when right arrow key is pressed and navigation is not possible', async () => {
-    fetchMock.mockResponseOnce(JSON.stringify(testCrossword));
     render(<Crossword />);
     await screen.findByTestId('connectionCallbacksReady');
     await act(() => {
@@ -281,7 +266,6 @@ it('keeps focus when right arrow key is pressed and navigation is not possible',
 })
 
 it('navigates down when down arrow key is pressed and navigation is possible', async () => {
-    fetchMock.mockResponseOnce(JSON.stringify(testCrossword));
     render(<Crossword />);
     await screen.findByTestId('connectionCallbacksReady');
     await act(() => {
@@ -299,7 +283,6 @@ it('navigates down when down arrow key is pressed and navigation is possible', a
 })
 
 it('keeps focus when down arrow key is pressed and navigation is not possible', async () => {
-    fetchMock.mockResponseOnce(JSON.stringify(testCrossword));
     render(<Crossword />);
     await screen.findByTestId('connectionCallbacksReady');
     await act(() => {
@@ -318,7 +301,6 @@ it('keeps focus when down arrow key is pressed and navigation is not possible', 
 })
 
 it('navigates up when up arrow key is pressed and navigation is possible', async () => {
-    fetchMock.mockResponseOnce(JSON.stringify(testCrossword));
     render(<Crossword />);
     await screen.findByTestId('connectionCallbacksReady');
     await act(() => {
@@ -336,7 +318,6 @@ it('navigates up when up arrow key is pressed and navigation is possible', async
 })
 
 it('keeps focus when up arrow key is pressed and navigation is not possible', async () => {
-    fetchMock.mockResponseOnce(JSON.stringify(testCrossword));
     render(<Crossword />);
     await screen.findByTestId('connectionCallbacksReady');
     await act(() => {
@@ -354,7 +335,6 @@ it('keeps focus when up arrow key is pressed and navigation is not possible', as
 })
 
 it('navigates left when backspace is pressed on empty input when horizontal word is active and navigation is possible', async () => {
-    fetchMock.mockResponseOnce(JSON.stringify(testCrossword));
     render(<Crossword />);
     await screen.findByTestId('connectionCallbacksReady');
     await act(() => {
@@ -373,7 +353,6 @@ it('navigates left when backspace is pressed on empty input when horizontal word
 })
 
 it('keeps focus when backspace is pressed on empty input when horizontal word is active and navigation is not possible', async () => {
-    fetchMock.mockResponseOnce(JSON.stringify(testCrossword));
     render(<Crossword />);
     await screen.findByTestId('connectionCallbacksReady');
     await act(() => {
@@ -392,7 +371,6 @@ it('keeps focus when backspace is pressed on empty input when horizontal word is
 })
 
 it('navigates up when backspace is pressed on empty input when vertical word is active and navigation is possible', async () => {
-    fetchMock.mockResponseOnce(JSON.stringify(testCrossword));
     render(<Crossword />);
     await screen.findByTestId('connectionCallbacksReady');
     await act(() => {
@@ -411,7 +389,6 @@ it('navigates up when backspace is pressed on empty input when vertical word is 
 })
 
 it('keeps focus when backspace is pressed on empty input when vertical word is active and navigation is not possible', async () => {
-    fetchMock.mockResponseOnce(JSON.stringify(testCrossword));
     render(<Crossword />);
     await screen.findByTestId('connectionCallbacksReady');
     await act(() => {
