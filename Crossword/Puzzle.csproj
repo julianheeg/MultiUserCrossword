@@ -10,8 +10,4 @@
     <PackageReference Include="System.Text.Json" Version="7.0.1" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Util\Util.csproj" />
-  </ItemGroup>
-
 </Project>
