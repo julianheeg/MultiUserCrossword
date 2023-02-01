@@ -1,18 +1,18 @@
-﻿import { render, screen, fireEvent, within } from '@testing-library/react';
+﻿import { render, screen, fireEvent, act } from '@testing-library/react';
 import Crossword from './Crossword';
-import fetchMock from 'jest-fetch-mock';
+import MockHubConnection from '../../signalr/MockHubConnection';
+import WrappedHubConnectionBuilder from '../../signalr/WrappedHubConnectionBuilder';
+import { ICrossword } from './crosswordGrid.type';
 
-const testCrossword = {
+
+const testCrossword: ICrossword = {
     grid: [
         [
             {
-                isWhiteCell: false,
-                clueAcross: null,
-                clueDown: null
+                isWhiteCell: false
             },
             {
                 isWhiteCell: false,
-                clueAcross: null,
                 clueDown: "ac"
             },
             {
@@ -22,70 +22,70 @@ const testCrossword = {
             },
             {
                 isWhiteCell: true,
-                solutionCharacter: "e",
-                guessedCharacter: null
+                solutionCharacter: "e"
             }
         ],
         [
             {
                 isWhiteCell: false,
-                clueAcross: "abf",
-                clueDown: null
+                clueAcross: "abf"
             },
             {
                 isWhiteCell: true,
-                solutionCharacter: "a",
-                guessedCharacter: null
+                solutionCharacter: "a"
             },
             {
                 isWhiteCell: true,
-                solutionCharacter: "b",
-                guessedCharacter: null
+                solutionCharacter: "b"
             },
             {
                 isWhiteCell: true,
-                solutionCharacter: "f",
-                guessedCharacter: null
+                solutionCharacter: "f"
             }
         ],
         [
             {
                 isWhiteCell: false,
-                clueAcross: "cdg",
-                clueDown: null
+                clueAcross: "cdg"
             },
             {
                 isWhiteCell: true,
-                solutionCharacter: "c",
-                guessedCharacter: null
+                solutionCharacter: "c"
             },
             {
                 isWhiteCell: true,
-                solutionCharacter: "d",
-                guessedCharacter: null
+                solutionCharacter: "d"
             },
             {
                 isWhiteCell: true,
-                solutionCharacter: "g",
-                guessedCharacter: null
+                solutionCharacter: "g"
             }
         ]
     ]
 }
 
+const mockHubConnection = new MockHubConnection();
+
 beforeEach(() => {
-    fetchMock.resetMocks();
+    mockHubConnection.resetMock();
+    jest.spyOn(WrappedHubConnectionBuilder.prototype, 'build').mockReturnValue(mockHubConnection);
 })
 
 it('renders without crashing', async () => {
-    fetchMock.mockResponseOnce(JSON.stringify(testCrossword));
     render(<Crossword />);
+    await screen.findByTestId('connectionCallbacksReady');
+    await act(() => {
+        mockHubConnection.simulateRPC('ReceiveCrossword', testCrossword);
+    });
     await screen.findByTestId('crossword');
 })
 
 it('loads a crossword after mounting', async () => {
-    fetchMock.mockResponseOnce(JSON.stringify(testCrossword));
     render(<Crossword />);
+    await screen.findByTestId('connectionCallbacksReady');
+    await act(() => {
+        mockHubConnection.simulateRPC('ReceiveCrossword', testCrossword);
+    });
     const whiteCells = await screen.findAllByTestId('white-cell');
     const blackCells = await screen.findAllByTestId('black-cell');
     expect(whiteCells.length).toBe(7);
@@ -93,16 +93,22 @@ it('loads a crossword after mounting', async () => {
 })
 
 it('has not highlighted a word after mounting', async () => {
-    fetchMock.mockResponseOnce(JSON.stringify(testCrossword));
     render(<Crossword />);
+    await screen.findByTestId('connectionCallbacksReady');
+    await act(() => {
+        mockHubConnection.simulateRPC('ReceiveCrossword', testCrossword);
+    });
     const whiteCells = await screen.findAllByTestId('white-cell');
     const highlightedCells = whiteCells.filter(cell => cell.classList.contains('activeWord'))
     expect(highlightedCells.length).toBe(0);
 })
 
 it('highlights corresponding horizontal word when clicking on an across clue', async () => {
-    fetchMock.mockResponseOnce(JSON.stringify(testCrossword));
     render(<Crossword />);
+    await screen.findByTestId('connectionCallbacksReady');
+    await act(() => {
+        mockHubConnection.simulateRPC('ReceiveCrossword', testCrossword);
+    });
     const clue = await screen.findByText('abf', { exact: false });
     fireEvent.click(clue);
     const whiteCells = await screen.findAllByTestId('white-cell');
@@ -116,8 +122,11 @@ it('highlights corresponding horizontal word when clicking on an across clue', a
 })
 
 it('highlights corresponding vertical word when clicking on a down clue', async () => {
-    fetchMock.mockResponseOnce(JSON.stringify(testCrossword));
     render(<Crossword />);
+    await screen.findByTestId('connectionCallbacksReady');
+    await act(() => {
+        mockHubConnection.simulateRPC('ReceiveCrossword', testCrossword);
+    });
     const clue = await screen.findByText('bd', { exact: false });
     fireEvent.click(clue);
     const whiteCells = await screen.findAllByTestId('white-cell');
@@ -130,8 +139,11 @@ it('highlights corresponding vertical word when clicking on a down clue', async 
 })
 
 it('highlights corresponding horizontal word when clicking on a white cell input', async () => {
-    fetchMock.mockResponseOnce(JSON.stringify(testCrossword));
     render(<Crossword />);
+    await screen.findByTestId('connectionCallbacksReady');
+    await act(() => {
+        mockHubConnection.simulateRPC('ReceiveCrossword', testCrossword);
+    });
     const whiteCellInputs = await screen.findAllByTestId('white-cell-input');
     fireEvent.click(whiteCellInputs[2]);
 
@@ -145,8 +157,11 @@ it('highlights corresponding horizontal word when clicking on a white cell input
 })
 
 it('focusses first white cell input in horizontal word when clicking on an across clue', async () => {
-    fetchMock.mockResponseOnce(JSON.stringify(testCrossword));
     render(<Crossword />);
+    await screen.findByTestId('connectionCallbacksReady');
+    await act(() => {
+        mockHubConnection.simulateRPC('ReceiveCrossword', testCrossword);
+    });
     const clue = await screen.findByText('abf', { exact: false });
     fireEvent.click(clue);
     const whiteCellInputs = await screen.findAllByTestId('white-cell-input');
@@ -155,8 +170,11 @@ it('focusses first white cell input in horizontal word when clicking on an acros
 })
 
 it('focusses first white cell input in vertical word when clicking on a down clue', async () => {
-    fetchMock.mockResponseOnce(JSON.stringify(testCrossword));
     render(<Crossword />);
+    await screen.findByTestId('connectionCallbacksReady');
+    await act(() => {
+        mockHubConnection.simulateRPC('ReceiveCrossword', testCrossword);
+    });
     const clue = await screen.findByText('bd', { exact: false });
     fireEvent.click(clue);
     const whiteCellInputs = await screen.findAllByTestId('white-cell-input');
@@ -165,16 +183,22 @@ it('focusses first white cell input in vertical word when clicking on a down clu
 })
 
 it('focusses corresponding input when clicking on a white cell', async () => {
-    fetchMock.mockResponseOnce(JSON.stringify(testCrossword));
     render(<Crossword />);
+    await screen.findByTestId('connectionCallbacksReady');
+    await act(() => {
+        mockHubConnection.simulateRPC('ReceiveCrossword', testCrossword);
+    });
     const whiteCellInputs = await screen.findAllByTestId('white-cell-input');
     fireEvent.click(whiteCellInputs[2]);
     expect(whiteCellInputs[2]).toHaveFocus();
 })
 
 it('navigates left when left arrow key is pressed and navigation is possible', async () => {
-    fetchMock.mockResponseOnce(JSON.stringify(testCrossword));
     render(<Crossword />);
+    await screen.findByTestId('connectionCallbacksReady');
+    await act(() => {
+        mockHubConnection.simulateRPC('ReceiveCrossword', testCrossword);
+    });
     const whiteCellInputs = await screen.findAllByTestId('white-cell-input');
     fireEvent.click(whiteCellInputs[2]);
 
@@ -188,8 +212,11 @@ it('navigates left when left arrow key is pressed and navigation is possible', a
 })
 
 it('keeps focus when left arrow key is pressed and navigation is not possible', async () => {
-    fetchMock.mockResponseOnce(JSON.stringify(testCrossword));
     render(<Crossword />);
+    await screen.findByTestId('connectionCallbacksReady');
+    await act(() => {
+        mockHubConnection.simulateRPC('ReceiveCrossword', testCrossword);
+    });
     const whiteCellInputs = await screen.findAllByTestId('white-cell-input');
     fireEvent.click(whiteCellInputs[1]);
 
@@ -203,8 +230,11 @@ it('keeps focus when left arrow key is pressed and navigation is not possible', 
 })
 
 it('navigates right when right arrow key is pressed and navigation is possible', async () => {
-    fetchMock.mockResponseOnce(JSON.stringify(testCrossword));
     render(<Crossword />);
+    await screen.findByTestId('connectionCallbacksReady');
+    await act(() => {
+        mockHubConnection.simulateRPC('ReceiveCrossword', testCrossword);
+    });
     const whiteCellInputs = await screen.findAllByTestId('white-cell-input');
     fireEvent.click(whiteCellInputs[2]);
 
@@ -218,8 +248,11 @@ it('navigates right when right arrow key is pressed and navigation is possible',
 })
 
 it('keeps focus when right arrow key is pressed and navigation is not possible', async () => {
-    fetchMock.mockResponseOnce(JSON.stringify(testCrossword));
     render(<Crossword />);
+    await screen.findByTestId('connectionCallbacksReady');
+    await act(() => {
+        mockHubConnection.simulateRPC('ReceiveCrossword', testCrossword);
+    });
     const whiteCellInputs = await screen.findAllByTestId('white-cell-input');
     fireEvent.click(whiteCellInputs[3]);
 
@@ -233,8 +266,11 @@ it('keeps focus when right arrow key is pressed and navigation is not possible',
 })
 
 it('navigates down when down arrow key is pressed and navigation is possible', async () => {
-    fetchMock.mockResponseOnce(JSON.stringify(testCrossword));
     render(<Crossword />);
+    await screen.findByTestId('connectionCallbacksReady');
+    await act(() => {
+        mockHubConnection.simulateRPC('ReceiveCrossword', testCrossword);
+    });
     const whiteCellInputs = await screen.findAllByTestId('white-cell-input');
     fireEvent.click(whiteCellInputs[2]);
 
@@ -247,8 +283,11 @@ it('navigates down when down arrow key is pressed and navigation is possible', a
 })
 
 it('keeps focus when down arrow key is pressed and navigation is not possible', async () => {
-    fetchMock.mockResponseOnce(JSON.stringify(testCrossword));
     render(<Crossword />);
+    await screen.findByTestId('connectionCallbacksReady');
+    await act(() => {
+        mockHubConnection.simulateRPC('ReceiveCrossword', testCrossword);
+    });
     const whiteCellInputs = await screen.findAllByTestId('white-cell-input');
     fireEvent.click(whiteCellInputs[5]);
 
@@ -262,8 +301,11 @@ it('keeps focus when down arrow key is pressed and navigation is not possible', 
 })
 
 it('navigates up when up arrow key is pressed and navigation is possible', async () => {
-    fetchMock.mockResponseOnce(JSON.stringify(testCrossword));
     render(<Crossword />);
+    await screen.findByTestId('connectionCallbacksReady');
+    await act(() => {
+        mockHubConnection.simulateRPC('ReceiveCrossword', testCrossword);
+    });
     const whiteCellInputs = await screen.findAllByTestId('white-cell-input');
     fireEvent.click(whiteCellInputs[5]);
 
@@ -276,8 +318,11 @@ it('navigates up when up arrow key is pressed and navigation is possible', async
 })
 
 it('keeps focus when up arrow key is pressed and navigation is not possible', async () => {
-    fetchMock.mockResponseOnce(JSON.stringify(testCrossword));
     render(<Crossword />);
+    await screen.findByTestId('connectionCallbacksReady');
+    await act(() => {
+        mockHubConnection.simulateRPC('ReceiveCrossword', testCrossword);
+    });
     const whiteCellInputs = await screen.findAllByTestId('white-cell-input');
     fireEvent.click(whiteCellInputs[2]);
 
@@ -290,8 +335,11 @@ it('keeps focus when up arrow key is pressed and navigation is not possible', as
 })
 
 it('navigates left when backspace is pressed on empty input when horizontal word is active and navigation is possible', async () => {
-    fetchMock.mockResponseOnce(JSON.stringify(testCrossword));
     render(<Crossword />);
+    await screen.findByTestId('connectionCallbacksReady');
+    await act(() => {
+        mockHubConnection.simulateRPC('ReceiveCrossword', testCrossword);
+    });
     const whiteCellInputs = await screen.findAllByTestId('white-cell-input');
     fireEvent.click(whiteCellInputs[5]);
 
@@ -305,8 +353,11 @@ it('navigates left when backspace is pressed on empty input when horizontal word
 })
 
 it('keeps focus when backspace is pressed on empty input when horizontal word is active and navigation is not possible', async () => {
-    fetchMock.mockResponseOnce(JSON.stringify(testCrossword));
     render(<Crossword />);
+    await screen.findByTestId('connectionCallbacksReady');
+    await act(() => {
+        mockHubConnection.simulateRPC('ReceiveCrossword', testCrossword);
+    });
     const whiteCellInputs = await screen.findAllByTestId('white-cell-input');
     fireEvent.click(whiteCellInputs[1]);
 
@@ -320,8 +371,11 @@ it('keeps focus when backspace is pressed on empty input when horizontal word is
 })
 
 it('navigates up when backspace is pressed on empty input when vertical word is active and navigation is possible', async () => {
-    fetchMock.mockResponseOnce(JSON.stringify(testCrossword));
     render(<Crossword />);
+    await screen.findByTestId('connectionCallbacksReady');
+    await act(() => {
+        mockHubConnection.simulateRPC('ReceiveCrossword', testCrossword);
+    });
     const whiteCellInputs = await screen.findAllByTestId('white-cell-input');
     fireEvent.click(whiteCellInputs[5]);
     fireEvent.keyDown(whiteCellInputs[5], { key: 'ArrowDown' });
@@ -335,8 +389,11 @@ it('navigates up when backspace is pressed on empty input when vertical word is 
 })
 
 it('keeps focus when backspace is pressed on empty input when vertical word is active and navigation is not possible', async () => {
-    fetchMock.mockResponseOnce(JSON.stringify(testCrossword));
     render(<Crossword />);
+    await screen.findByTestId('connectionCallbacksReady');
+    await act(() => {
+        mockHubConnection.simulateRPC('ReceiveCrossword', testCrossword);
+    });
     const whiteCellInputs = await screen.findAllByTestId('white-cell-input');
     fireEvent.click(whiteCellInputs[1]);
     fireEvent.keyDown(whiteCellInputs[1], { key: 'ArrowUp' });

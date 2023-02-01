@@ -3,22 +3,45 @@ import WhiteCellComponent from './WhiteCell';
 import BlackCellComponent from './BlackCell';
 import { Direction } from './Direction';
 import { Table, TableBody, TableRow } from '@mui/material';
-import { Cell, BlackCell } from './crosswordGrid.type';
+import { ICell, IBlackCell, ICrossword } from './crosswordGrid.type';
+import { LogLevel } from '@microsoft/signalr';
+import IHubConnection from '../../signalr/IHubConnection';
+import WrappedHubConnectionBuilder from '../../signalr/WrappedHubConnectionBuilder';
+import Loading from './Loading';
 
 const Crossword: FC<{}> = () => {
-    const [grid, setGrid] = useState<Cell[][] | null>(null);
+    const [grid, setGrid] = useState<ICell[][] | null>(null);
     const [activeWord, setActiveWord] = useState<string[]>([]);
     const [activeCell, setActiveCell] = useState<string | null>(null);
+    const [, setConnection] = useState<IHubConnection | null>(null);
+    const [connectionCallbacksReady, setConnectionCallbacksReady] = useState<boolean>(false);
 
     useEffect(() => {
-        getCrossword();
-    }, []);
+        const hubConnection = new WrappedHubConnectionBuilder()
+            .withUrl('https://localhost:7177/hubs/crossword')
+            .withAutomaticReconnect()
+            .configureLogging(LogLevel.Information)
+            .build();
 
-    const getCrossword = async () => {
-        const response = await fetch('crossword');
-        const data = await response.json();
-        setGrid(data.grid);
-    }
+        hubConnection.start()
+            .then(async () => {
+                hubConnection.on('ReceiveCrossword', message => {
+                    setGrid((message as ICrossword).grid);
+                });
+
+                setConnectionCallbacksReady(true);
+
+                try {
+                    await hubConnection.send('RequestCrossword');
+                }
+                catch (e) {
+                    console.log(e);
+                }
+            })
+            .catch(e => console.log('Connection failed: ', e));
+
+        setConnection(hubConnection);
+    }, []);
 
     const highlightHorizontalWord = (rowIndex: number, columnIndex: number) => {
         let newActiveWord = [];
@@ -163,11 +186,9 @@ const Crossword: FC<{}> = () => {
         setActiveCell(nextActiveCell);
     }
 
-    if (grid === null)
+    if (!connectionCallbacksReady || grid === null)
         return (
-            <div>
-                <p><em>Loading...</em></p>
-            </div>
+            <Loading connectionCallbacksReady={connectionCallbacksReady} />
         );
 
     return (
@@ -184,7 +205,7 @@ const Crossword: FC<{}> = () => {
                                         isActiveCell={activeCell === key} navigate={(direction) => navigate(rowIndex, columnIndex, direction)} />
                                 }
                                 else {
-                                    let blackCell = cell as BlackCell;
+                                    let blackCell = cell as IBlackCell;
                                     return <BlackCellComponent key={key} clueAcross={blackCell.clueAcross} clueDown={blackCell.clueDown} onHorizontalClueClick={() => highlightHorizontalWord(rowIndex, columnIndex)} onVerticalClueClick={() => highlightVerticalWord(rowIndex, columnIndex)} />
                                 }
                             })
