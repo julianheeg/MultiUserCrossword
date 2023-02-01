@@ -1,11 +1,15 @@
-﻿export interface Cell {
+﻿export type ICrossword = { grid: (IWhiteCell | IBlackCell)[][] }
+
+export interface ICell {
     isWhiteCell: boolean;
 }
 
-export interface BlackCell extends Cell {
+export interface IBlackCell extends ICell {
     clueAcross?: string;
     clueDown?: string;
 }
 
-export interface WhiteCell extends Cell {
+export interface IWhiteCell extends ICell {
+    solutionCharacter: string;
+    guessedCharacter?: string;
 }
